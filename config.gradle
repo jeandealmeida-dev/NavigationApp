@@ -1,0 +1,5 @@
+ext {
+    DEFAULT_DELAY_DEBUG = 1000L
+    DEFAULT_DELAY_RELEASE = 0L
+    API_BASE_URL = "https://api.example.com"
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Chat screen strings -->
+    <string name="hint_enter_message">Enter your message</string>
+    <string name="send_message">Send message</string>
+    <string name="chat_title">Chat</string>
+    <string name="error_empty_message">Message cannot be empty</string>
+    <string name="error_send_failed">Failed to send message</string>
+    <string name="error_load_failed">Failed to load messages</string>
+    <string name="realtime_connected">Connected to chat</string>
+    <string name="realtime_disconnected">Disconnected from chat</string>
+</resources>
