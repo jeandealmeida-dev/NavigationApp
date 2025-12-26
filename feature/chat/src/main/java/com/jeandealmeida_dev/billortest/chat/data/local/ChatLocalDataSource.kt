@@ -15,7 +15,7 @@ class ChatLocalDataSource @Inject constructor(
     private val chatMessageDao: ChatMessageDao
 ) {
 
-    suspend fun getMessagesByChannel(channelId: String): Flow<List<ChatMessageEntity>> {
+    fun getMessagesByChannel(channelId: String): Flow<List<ChatMessageEntity>> {
         return chatMessageDao.getMessagesByChannel(channelId)
     }
 

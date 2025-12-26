@@ -27,9 +27,7 @@ class LocationHandler @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(context)
     }
-    private val cancellationTokenSource: CancellationTokenSource by lazy {
-        CancellationTokenSource()
-    }
+    private var cancellationTokenSource: CancellationTokenSource? = null
     private var permissionLauncher: ActivityResultLauncher<String>? = null
 
     fun setCallback(callback: LocationCallback?) {
@@ -57,10 +55,12 @@ class LocationHandler @Inject constructor(
 
     @SuppressLint("MissingPermission")
     private fun executeGetLocation() {
-
+        // Create a new CancellationTokenSource for each location request
+        cancellationTokenSource = CancellationTokenSource()
+        
         fusedLocationClient.getCurrentLocation(
             Priority.PRIORITY_HIGH_ACCURACY,
-            cancellationTokenSource.token
+            cancellationTokenSource!!.token
         ).addOnSuccessListener { location ->
             location?.let {
                 val geo = GeoPoint(it.latitude, it.longitude)
@@ -86,11 +86,12 @@ class LocationHandler @Inject constructor(
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        cancellationTokenSource.cancel()
+        cancellationTokenSource?.cancel()
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        cancellationTokenSource.cancel()
+        cancellationTokenSource?.cancel()
+        cancellationTokenSource = null
         callback = null
         permissionLauncher?.unregister()
         permissionLauncher = null

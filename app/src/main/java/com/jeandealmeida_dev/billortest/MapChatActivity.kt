@@ -2,12 +2,9 @@ package com.jeandealmeida_dev.billortest
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.transition.TransitionManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.jeandealmeida_dev.billortest.app.R
+import com.jeandealmeida_dev.billortest.app.databinding.ActivityMapChatBinding
 import com.jeandealmeida_dev.billortest.chat.ui.ChatFragment
 import com.jeandealmeida_dev.billortest.map.ui.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,63 +12,49 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MapChatActivity : AppCompatActivity() {
 
-    private lateinit var rootLayout: ConstraintLayout
-    private lateinit var mapContainer: View
-    private lateinit var chatContainer: View
-    private lateinit var fabChat: FloatingActionButton
-    private lateinit var fabCloseChat: FloatingActionButton
-    private lateinit var textChatCounter: TextView
+    private lateinit var binding: ActivityMapChatBinding
 
     private var isChatExpanded = false
-    private var mapFragment: MapFragment? = null
+    private val mapFragment: MapFragment by lazy {
+        MapFragment()
+    }
     private val chatFragment: ChatFragment by lazy {
-        ChatFragment().also {
-            it.setNewMessageCounterListener {
-                if (isChatExpanded) {
-                    textChatCounter.visibility = View.GONE
-                    textChatCounter.text = "0"
-                } else {
-                    val update = textChatCounter.text.toString().toInt()
-                    textChatCounter.visibility = View.VISIBLE
-                    textChatCounter.text = (update + 1).toString()
-                }
-            }
-        }
+        ChatFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map_chat)
+        binding = ActivityMapChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initViews()
         setupFragments()
         setupClickListeners()
     }
 
-    private fun initViews() {
-        rootLayout = findViewById(R.id.root_layout)
-        mapContainer = findViewById(R.id.map_container)
-        chatContainer = findViewById(R.id.chat_container)
-        fabChat = findViewById(R.id.fab_chat)
-        fabCloseChat = findViewById(R.id.fab_close_chat)
-        textChatCounter = findViewById(R.id.text_chat_counter)
-    }
-
     private fun setupFragments() {
-        mapFragment = MapFragment()
+        chatFragment.setNewMessageCounterListener {
+            if (isChatExpanded) {
+                binding.textChatCounter.visibility = View.GONE
+                binding.textChatCounter.text = "0"
+            } else {
+                val update = binding.textChatCounter.text.toString().toInt()
+                binding.textChatCounter.visibility = View.VISIBLE
+                binding.textChatCounter.text = (update + 1).toString()
+            }
+        }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.map_container, mapFragment!!)
+            .replace(binding.mapContainer.id, mapFragment)
             .commit()
     }
 
     private fun setupClickListeners() {
-        fabChat.setOnClickListener {
-            textChatCounter.visibility = View.GONE
-            textChatCounter.text = "0"
+        binding.fabChat.setOnClickListener {
+            binding.textChatCounter.visibility = View.GONE
+            binding.textChatCounter.text = "0"
             expandChat()
         }
 
-        fabCloseChat.setOnClickListener {
+        binding.fabCloseChat.setOnClickListener {
             minimizeChat()
         }
     }
@@ -81,14 +64,14 @@ class MapChatActivity : AppCompatActivity() {
 
         isChatExpanded = true
         supportFragmentManager.beginTransaction()
-            .replace(R.id.chat_container, chatFragment)
+            .replace(binding.chatContainer.id, chatFragment)
             .commit()
 
-        TransitionManager.beginDelayedTransition(rootLayout)
+        TransitionManager.beginDelayedTransition(binding.rootLayout)
 
-        chatContainer.visibility = View.VISIBLE
-        fabCloseChat.visibility = View.VISIBLE
-        fabChat.visibility = View.GONE
+        binding.chatContainer.visibility = View.VISIBLE
+        binding.fabCloseChat.visibility = View.VISIBLE
+        binding.fabChat.visibility = View.GONE
 
         updateConstraintsForExpandedChat()
     }
@@ -98,22 +81,22 @@ class MapChatActivity : AppCompatActivity() {
 
         isChatExpanded = false
 
-        TransitionManager.beginDelayedTransition(rootLayout)
+        TransitionManager.beginDelayedTransition(binding.rootLayout)
 
-        chatContainer.visibility = View.GONE
-        fabCloseChat.visibility = View.GONE
+        binding.chatContainer.visibility = View.GONE
+        binding.fabCloseChat.visibility = View.GONE
 
-        fabChat.visibility = View.VISIBLE
+        binding.fabChat.visibility = View.VISIBLE
 
         updateConstraintsForMinimizedChat()
     }
 
     private fun updateConstraintsForExpandedChat() {
-        rootLayout.requestLayout()
+        binding.rootLayout.requestLayout()
     }
 
     private fun updateConstraintsForMinimizedChat() {
-        rootLayout.requestLayout()
+        binding.rootLayout.requestLayout()
     }
 
     override fun onBackPressed() {

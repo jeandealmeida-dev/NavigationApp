@@ -53,8 +53,8 @@ class NavigationManager(
     private lateinit var mapView: BillorMapView
 
     // Separated responsibility managers
-    private lateinit var routeManager: RouteManager
-    private lateinit var cameraManager: CameraManager
+    private var routeManager: RouteManager? = null
+    private var cameraManager: CameraManager? = null
     private val replayManager = ReplayManager()
 
     // Navigation state
@@ -170,8 +170,8 @@ class NavigationManager(
         navigation.stopTripSession()
         replayManager.stopReplay(navigation)
 
-        routeManager.clearRouteLine(mapView)
-        cameraManager.resetFrame()
+        routeManager?.clearRouteLine(mapView)
+        cameraManager?.resetFrame()
 
         navigation.startTripSession()
         _navigationState.value = NavigationState.IDLE
@@ -187,7 +187,7 @@ class NavigationManager(
         replayManager.getReplayProgressObserver()?.let {
             mapboxNavigation.unregisterRouteProgressObserver(it)
         }
-        routeManager.clearRouteLine(mapView)
+        routeManager?.clearRouteLine(mapView)
         this.mapboxNavigation = null
         _navigationState.value = NavigationState.IDLE
     }
@@ -220,17 +220,17 @@ class NavigationManager(
      */
     private val routesObserver = RoutesObserver { routeUpdateResult ->
         if (routeUpdateResult.navigationRoutes.isNotEmpty()) {
-            val routeLineApi = routeManager.getRouteLineApi()
-            val routeLineView = routeManager.getRouteLineView()
-            val viewportDataSource = cameraManager.getViewportDataSource()
+            val routeLineApi = routeManager?.getRouteLineApi()
+            val routeLineView = routeManager?.getRouteLineView()
+            val viewportDataSource = cameraManager?.getViewportDataSource()
 
-            routeLineApi.setNavigationRoutes(routeUpdateResult.navigationRoutes) { value ->
+            routeLineApi?.setNavigationRoutes(routeUpdateResult.navigationRoutes) { value ->
                 mapView.mapboxMap.style?.apply {
-                    routeLineView.renderRouteDrawData(this, value)
+                    routeLineView?.renderRouteDrawData(this, value)
                 }
             }
 
-            viewportDataSource.onRouteChanged(routeUpdateResult.navigationRoutes.first())
+            viewportDataSource?.onRouteChanged(routeUpdateResult.navigationRoutes.first())
         }
     }
 
@@ -245,18 +245,18 @@ class NavigationManager(
             val enhancedLocation = locationMatcherResult.enhancedLocation
             if (enhancedLocation.latitude == 0.0 || enhancedLocation.longitude == 0.0) return
 
-            val viewportDataSource = cameraManager.getViewportDataSource()
+            val viewportDataSource = cameraManager?.getViewportDataSource()
 
             navigationLocationProvider.changePosition(
                 location = enhancedLocation,
                 keyPoints = locationMatcherResult.keyPoints,
             )
 
-            viewportDataSource.onLocationChanged(enhancedLocation)
-            viewportDataSource.evaluate()
+            viewportDataSource?.onLocationChanged(enhancedLocation)
+            viewportDataSource?.evaluate()
 
             if (_navigationState.value == NavigationState.NAVIGATING && firstValidPosition) {
-                cameraManager.requestFollowingMode()
+                cameraManager?.requestFollowingMode()
                 firstValidPosition = false
             }
         }

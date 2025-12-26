@@ -85,8 +85,13 @@ class ChatViewModel @Inject constructor(
                 }
                 .collect { messages ->
                     _state.value = ChatViewState.Messages(messages)
+                    if (messages.isNotEmpty()) {
+                        _state.value = ChatViewState.NewMessage(messages.last())
+                    }
                 }
+        }
 
+        viewModelScope.launch {
             runCatching {
                 subscribeToMessagesUseCase.invoke(channelId = currentChannelId)
             }.onFailure { exception ->

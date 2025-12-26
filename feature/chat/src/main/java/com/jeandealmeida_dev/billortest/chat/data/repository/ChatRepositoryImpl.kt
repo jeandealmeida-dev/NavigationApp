@@ -32,10 +32,7 @@ class ChatRepositoryImpl @Inject constructor(
                 userId = userId,
                 userName = userName,
                 channelId = channelId
-            ).toDomain().also { message ->
-                // Save to local cache
-                localDataSource.insertMessage(message.toEntity())
-            }
+            ).toDomain()
         } catch (exception: Exception) {
             throw ChatException.MessageSentException(exception.message ?: "Erro ao obter mensagens")
         }
@@ -56,10 +53,7 @@ class ChatRepositoryImpl @Inject constructor(
                 userId,
                 userName,
                 channelId
-            ).toDomain().also { message ->
-                // Save to local cache
-                localDataSource.insertMessage(message.toEntity())
-            }
+            ).toDomain()
         } catch (exception: Exception) {
             throw ChatException.MessageSentException(exception.message ?: "Erro ao obter mensagens")
         }
