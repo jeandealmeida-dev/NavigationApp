@@ -219,7 +219,30 @@ O projeto já possui o arquivo `google-services.json` configurado. Caso precise 
 - Crie ou selecione um projeto
 - Adicione um app Android com o package name: `com.jeandealmeida_dev.billortest`
 - Baixe o `google-services.json` e coloque em `app/`
+- Habilite o Firestore no console do firebase e adicione a seguinte regra:
+```bash
+rules_version = '2';
 
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+- Habilite também o Storage, responsável por armazenar os audios do chat
+- Adicione a seguinte regra:
+```bash
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
 #### 4. Sync do Projeto
 ```bash
 ./gradlew build
@@ -251,8 +274,8 @@ O app solicitará as seguintes permissões em runtime:
 #### Navegação
 1. Ao abrir o app, permita acesso à localização
 2. O mapa será centralizado na sua posição atual
-3. Toque e segure em qualquer ponto do mapa para criar uma rota
-4. Use os controles de navegação para iniciar/pausar/parar
+3. Pesquisar por uma direção na barra de busca
+4. Iniciar a navegação pressionando o botão de indicado
 
 #### Chat
 1. Toque no ícone de chat (FAB inferior direito)
@@ -262,33 +285,27 @@ O app solicitará as seguintes permissões em runtime:
 
 ---
 
-## 🔮 Próximos Passos (Next Steps)
+## 🔮 Next Steps
 
-### Funcionalidades Planejadas
+### Funcionalidades Sugeridas
 
 1. **Autenticação de Usuários**
    - Login com Firebase Authentication
-   - Suporte a múltiplas contas
-   - Chat entre usuários diferentes
+   - Chat entre usuários diferentes (diferentes channels)
 
 2. **Compartilhamento de Localização**
    - Compartilhar localização em tempo real no chat
    - Ver localização de outros usuários no mapa
-   - Criar rotas para localizações compartilhadas
 
 3. **Histórico de Navegação**
-   - Salvar rotas percorridas
-   - Replay de rotas antigas
    - Estatísticas (distância total, tempo, velocidade média)
 
 4. **Melhorias no Chat**
    - Suporte a imagens
-   - Reações a mensagens
    - Indicador de mensagens não lidas
    - Notificações push
 
 5. **Offline Mode**
-   - Download de mapas para uso offline
    - Queue de mensagens quando offline
    - Sincronização automática ao reconectar
 
@@ -301,13 +318,7 @@ O app solicitará as seguintes permissões em runtime:
 
 2. **Performance**
    - Implementar paginação no chat
-   - Cache de tiles do mapa
    - Otimização de consultas do Firestore
-
-3. **Acessibilidade**
-   - Suporte completo a TalkBack
-   - Contraste de cores para baixa visão
-   - Tamanhos de fonte ajustáveis
 
 4. **CI/CD**
    - Pipeline de build automático
