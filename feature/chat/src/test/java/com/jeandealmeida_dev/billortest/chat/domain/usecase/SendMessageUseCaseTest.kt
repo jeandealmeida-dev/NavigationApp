@@ -54,11 +54,12 @@ class SendMessageUseCaseTest {
     }
 
     @Test
-    fun `invoke should send message without channelId`() = runBlocking {
+    fun `invoke should send message with channelId`() = runBlocking {
         // Given
         val message = "Hello"
         val userId = "user456"
         val userName = "Jane Smith"
+        val channelId = "channel2"
         
         val expectedMessage = ChatMessage(
             id = "msg2",
@@ -66,21 +67,21 @@ class SendMessageUseCaseTest {
             userId = userId,
             userName = userName,
             timestamp = 1234567890L,
-            channelId = null,
+            channelId = channelId,
             isSent = true
         )
         
         coEvery { 
-            repository.sendMessage(message, userId, userName, null) 
+            repository.sendMessage(message, userId, userName, channelId) 
         } returns expectedMessage
 
         // When
-        val result = useCase(message, userId, userName)
+        val result = useCase(message, userId, userName, channelId)
 
         // Then
         assertEquals(expectedMessage, result)
         coVerify(exactly = 1) { 
-            repository.sendMessage(message, userId, userName, null) 
+            repository.sendMessage(message, userId, userName, channelId) 
         }
     }
 
@@ -91,6 +92,7 @@ class SendMessageUseCaseTest {
         val trimmedMessage = "Hello with spaces"
         val userId = "user789"
         val userName = "Bob"
+        val channelId = "channel3"
         
         val expectedMessage = ChatMessage(
             id = "msg3",
@@ -98,21 +100,21 @@ class SendMessageUseCaseTest {
             userId = userId,
             userName = userName,
             timestamp = 1234567890L,
-            channelId = null,
+            channelId = channelId,
             isSent = true
         )
         
         coEvery { 
-            repository.sendMessage(trimmedMessage, userId, userName, null) 
+            repository.sendMessage(trimmedMessage, userId, userName, channelId) 
         } returns expectedMessage
 
         // When
-        val result = useCase(message, userId, userName)
+        val result = useCase(message, userId, userName, channelId)
 
         // Then
         assertEquals(expectedMessage, result)
         coVerify(exactly = 1) { 
-            repository.sendMessage(trimmedMessage, userId, userName, null) 
+            repository.sendMessage(trimmedMessage, userId, userName, channelId) 
         }
     }
 
@@ -122,11 +124,12 @@ class SendMessageUseCaseTest {
         val blankMessage = "   "
         val userId = "user123"
         val userName = "John"
+        val channelId = "channel4"
 
         // When/Then
         try {
             runBlocking {
-                useCase(blankMessage, userId, userName)
+                useCase(blankMessage, userId, userName, channelId)
             }
             throw AssertionError("Expected IllegalArgumentException was not thrown")
         } catch (e: IllegalArgumentException) {
@@ -140,11 +143,12 @@ class SendMessageUseCaseTest {
         val message = "Hello"
         val blankUserId = ""
         val userName = "John"
+        val channelId = "channel5"
 
         // When/Then
         try {
             runBlocking {
-                useCase(message, blankUserId, userName)
+                useCase(message, blankUserId, userName, channelId)
             }
             throw AssertionError("Expected IllegalArgumentException was not thrown")
         } catch (e: IllegalArgumentException) {
@@ -158,15 +162,35 @@ class SendMessageUseCaseTest {
         val message = "Hello"
         val userId = "user123"
         val blankUserName = "  "
+        val channelId = "channel6"
 
         // When/Then
         try {
             runBlocking {
-                useCase(message, userId, blankUserName)
+                useCase(message, userId, blankUserName, channelId)
             }
             throw AssertionError("Expected IllegalArgumentException was not thrown")
         } catch (e: IllegalArgumentException) {
             assertEquals("User name cannot be blank", e.message)
+        }
+    }
+
+    @Test
+    fun `invoke should throw exception when channelId is blank`() {
+        // Given
+        val message = "Hello"
+        val userId = "user123"
+        val userName = "John"
+        val blankChannelId = "  "
+
+        // When/Then
+        try {
+            runBlocking {
+                useCase(message, userId, userName, blankChannelId)
+            }
+            throw AssertionError("Expected IllegalArgumentException was not thrown")
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Channel ID cannot be blank", e.message)
         }
     }
 
@@ -176,15 +200,16 @@ class SendMessageUseCaseTest {
         val message = "Hello"
         val userId = "user123"
         val userName = "John"
+        val channelId = "channel7"
         
         coEvery { 
-            repository.sendMessage(message, userId, userName, null) 
+            repository.sendMessage(message, userId, userName, channelId) 
         } throws Exception("Network error")
 
         // When/Then
         try {
             runBlocking {
-                useCase(message, userId, userName)
+                useCase(message, userId, userName, channelId)
             }
             throw AssertionError("Expected exception was not thrown")
         } catch (e: Exception) {

@@ -5,9 +5,8 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapChatActivity">
+    tools:context="com.jeandealmeida_dev.billortest.MapChatActivity">
 
-    <!-- Map Container - Takes full width when chat is minimized, reduced when chat is expanded -->
     <FrameLayout
         android:id="@+id/map_container"
         android:layout_width="0dp"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Chat Container - Initially invisible, shown on the right when expanded -->
     <FrameLayout
         android:id="@+id/chat_container"
         android:layout_width="0dp"
@@ -31,28 +29,47 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.35" />
 
-    <!-- FAB for Chat - Shown when chat is minimized -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/chat_fab_description"
-        android:src="@android:drawable/ic_dialog_email"
+        android:src="@drawable/ic_chat"
+        android:tint="#ffff"
+        app:backgroundTint="@color/circle_background_gradient_2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
-    <!-- Close Chat Button - Shown in the chat header when chat is expanded -->
+    <TextView
+        android:id="@+id/text_chat_counter"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="-22dp"
+        android:layout_marginBottom="-22dp"
+        android:background="@drawable/chat_counter_background"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:text="3"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/fab_chat"
+        app:layout_constraintEnd_toStartOf="@id/fab_chat" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_close_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/close_chat_description"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:src="@drawable/ic_close_fullscreen"
         android:visibility="gone"
+        app:backgroundTint="@color/white"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="@+id/chat_container"
-        app:layout_constraintTop_toTopOf="@+id/chat_container" />
+        app:layout_constraintTop_toTopOf="@+id/chat_container"
+        app:tint="@color/circle_background_gradient_2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

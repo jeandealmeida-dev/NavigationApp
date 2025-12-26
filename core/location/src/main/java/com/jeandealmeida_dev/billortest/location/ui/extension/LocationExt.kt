@@ -1,4 +1,4 @@
-package com.jeandealmeida_dev.billortest.location.ui.handler
+package com.jeandealmeida_dev.billortest.location.ui.extension
 
 import android.content.Context
 import android.content.Intent

@@ -22,8 +22,8 @@ import com.jeandealmeida_dev.billortest.chat.ui.adapter.ChatMessageAdapter
 import com.jeandealmeida_dev.billortest.chat.ui.viewmodel.ChatViewModel
 import com.jeandealmeida_dev.billortest.chat.ui.viewmodel.ChatViewState
 import com.jeandealmeida_dev.billortest.commons.audio.AudioPlayer
+import com.jeandealmeida_dev.billortest.commons.ui.extensions.getDeviceID
 import com.jeandealmeida_dev.billortest.commons.ui.handler.AudioRecordHandler
-import com.jeandealmeida_dev.billortest.core.extensions.getDeviceID
 import com.jeandealmeida_dev.billortest.feature.chat.R
 import com.jeandealmeida_dev.billortest.feature.chat.databinding.FragmentChatBinding
 import dagger.hilt.android.AndroidEntryPoint

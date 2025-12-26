@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.jeandealmeida_dev.billortest.MapChatActivity">
 
-    <!-- Map Container - Takes full width when chat is minimized -->
     <FrameLayout
         android:id="@+id/map_container"
         android:layout_width="0dp"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Chat Container - Initially invisible, overlays map when visible -->
     <FrameLayout
         android:id="@+id/chat_container"
         android:layout_width="0dp"
@@ -30,7 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- FAB for Chat - Shown when chat is minimized -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
@@ -60,7 +57,6 @@
         app:layout_constraintBottom_toTopOf="@+id/fab_chat"
         app:layout_constraintEnd_toStartOf="@id/fab_chat" />
 
-    <!-- Close Chat Button - Shown in the chat header when chat is expanded -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_close_chat"
         android:layout_width="wrap_content"
