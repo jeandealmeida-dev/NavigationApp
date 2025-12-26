@@ -6,6 +6,7 @@ plugins {
     id(ProjectPlugins.NavigationSafeArgs)
     id(ProjectPlugins.Kapt)
     id(ProjectPlugins.Hilt)
+    id("com.google.gms.google-services")
 }
 
 hilt {
@@ -16,27 +17,16 @@ android {
     lint {
         abortOnError = false
     }
-    
-    defaultConfig {
-        // Read Mapbox token from local.properties
-        val localProperties = Properties()
-        val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) {
-            localProperties.load(localPropertiesFile.inputStream())
-        }
-        val mapboxToken = localProperties.getProperty("MAPBOX_ACCESS_TOKEN") ?: ""
-        
-        // Make token available as a string resource
-        resValue("string", "mapbox_access_token", mapboxToken)
-    }
 }
 
 dependencies {
     implementation(ProjectDependencies.Kotlin.Stdlib())
 
     // Project
+    implementation(project(":commons"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:map"))
+    implementation(project(":core:location"))
 
     // VersionCatalog
     implementationPackLibraries {
@@ -85,4 +75,9 @@ dependencies {
 
     // Picasso
     implementation(libs.picasso)
+
+    //Mapbox
+    implementation(libs.mapbox.maps)
+    implementation(libs.mapbox.navigation.android)
+    implementation(libs.mapbox.navigation.ui.components)
 }

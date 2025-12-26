@@ -2,8 +2,10 @@ package com.jeandealmeida_dev.billortest.chat.data.local
 
 import com.jeandealmeida_dev.billortest.chat.data.local.dao.ChatMessageDao
 import com.jeandealmeida_dev.billortest.chat.data.local.entity.ChatMessageEntity
+import com.jeandealmeida_dev.billortest.chat.domain.model.ChatMessage
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -12,28 +14,24 @@ import javax.inject.Inject
 class ChatLocalDataSource @Inject constructor(
     private val chatMessageDao: ChatMessageDao
 ) {
-    
-    fun getAllMessages(): Flowable<List<ChatMessageEntity>> {
-        return chatMessageDao.getAllMessages()
-    }
-    
-    fun getMessagesByChannel(channelId: String): Flowable<List<ChatMessageEntity>> {
+
+    suspend fun getMessagesByChannel(channelId: String): Flow<List<ChatMessageEntity>> {
         return chatMessageDao.getMessagesByChannel(channelId)
     }
-    
-    fun insertMessage(message: ChatMessageEntity): Single<Long> {
+
+    suspend fun insertMessage(message: ChatMessageEntity): Long {
         return chatMessageDao.insertMessage(message)
     }
-    
-    fun insertMessages(messages: List<ChatMessageEntity>): Single<List<Long>> {
+
+    suspend fun insertMessages(messages: List<ChatMessageEntity>): List<Long> {
         return chatMessageDao.insertMessages(messages)
     }
-    
-    fun deleteAllMessages(): Single<Int> {
+
+    suspend fun deleteAllMessages(): Int {
         return chatMessageDao.deleteAllMessages()
     }
-    
-    fun deleteMessage(messageId: String): Single<Int> {
+
+    suspend fun deleteMessage(messageId: String): Int {
         return chatMessageDao.deleteMessage(messageId)
     }
 }

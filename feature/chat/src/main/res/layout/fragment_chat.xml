@@ -6,19 +6,58 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/circle_background_gradient_3"
+        android:padding="@dimen/padding_x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/image_profile"
+            android:layout_width="@dimen/button_size_x"
+            android:layout_height="@dimen/button_size_x"
+            android:background="@drawable/chat_avatar_background"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:padding="@dimen/padding_m"
+            android:text="@string/chat_title"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_profile"
+            app:layout_constraintTop_toTopOf="@id/image_profile"
+            tools:text="@string/support_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <!-- Messages RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_messages"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingTop="@dimen/padding_s"
+        android:paddingBottom="@dimen/padding_s"
         app:layout_constraintBottom_toTopOf="@+id/layout_message_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_message_received" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        tools:listitem="@layout/item_message" />
 
     <!-- Progress Bar -->
     <ProgressBar
@@ -38,41 +77,87 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:elevation="4dp"
-        android:padding="8dp"
+        android:padding="@dimen/padding_s"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/text_user_typing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_s"
+            android:textColor="@color/circle_background_gradient_2"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/edit_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="John Doe está digitando.." />
 
         <!-- Message EditText -->
         <EditText
             android:id="@+id/edit_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/padding_s"
+            android:layout_marginEnd="@dimen/padding_s"
             android:background="@android:drawable/edit_text"
             android:hint="@string/hint_enter_message"
             android:imeOptions="actionSend"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLines="4"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/button_size_x"
             android:padding="12dp"
+            android:textColor="@color/text_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_send"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Send Button -->
         <ImageButton
             android:id="@+id/button_send"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="@dimen/button_size_x"
+            android:layout_height="@dimen/button_size_x"
+            android:background="@drawable/chat_circular_button_background"
             android:contentDescription="@string/send_message"
-            android:src="@android:drawable/ic_menu_send"
-            android:tint="?attr/colorPrimary"
+            android:src="@drawable/ic_send"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:tint="@color/white" />
+
+        <!-- Audio Recording Button -->
+        <ImageButton
+            android:id="@+id/button_audio"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/chat_circular_button_background"
+            android:contentDescription="@string/record_audio"
+            android:src="@drawable/ic_microphone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <!-- Recording Indicator (Initially Hidden) -->
+        <TextView
+            android:id="@+id/text_recording_time"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:gravity="center_vertical|right"
+            android:paddingEnd="@dimen/padding_x"
+            android:text="@string/recording_time_initial"
+            android:textColor="@color/circle_background_gradient_2"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/edit_message"
+            app:layout_goneMarginEnd="@dimen/padding_s"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id(ProjectPlugins.Library)
     id(ProjectPlugins.MyPlugin)
@@ -13,37 +15,23 @@ android {
         abortOnError = false
     }
 
-    buildTypes {
-        debug {
-//            buildConfigField(
-//                "long",
-//                "DEFAULT_DELAY",
-//                "${project.rootProject.extra["DEFAULT_DELAY_DEBUG"]}"
-//            )
-//            buildConfigField(
-//                "String",
-//                "API_BASE_URL",
-//                "\"${project.rootProject.extra["API_BASE_URL"]}\""
-//            )
+    defaultConfig {
+        // Read Mapbox token from local.properties
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
         }
+        val mapboxToken = localProperties.getProperty("MAPBOX_ACCESS_TOKEN") ?: ""
 
-        release {
-//            buildConfigField(
-//                "long",
-//                "DEFAULT_DELAY",
-//                "${project.rootProject.extra["DEFAULT_DELAY_RELEASE"]}"
-//            )
-//            buildConfigField(
-//                "String",
-//                "API_BASE_URL",
-//                "\"${project.rootProject.extra["API_BASE_URL"]}\""
-//            )
-        }
+        // Make token available as a string resource
+        resValue("string", "mapbox_access_token", mapboxToken)
     }
 }
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
+    implementation(project(ProjectDependencies.Module.Core.location))
 
     implementationPackLibraries {
         addUnitTestDependencies(it)
@@ -72,9 +60,9 @@ dependencies {
     implementation(libs.mapbox.search.discover)
     implementation(libs.mapbox.search.place.autocomplete)
     implementation(libs.mapbox.navigation.android)
+    implementation(libs.mapbox.navigation.ui.components)
     // Kotlin Coroutines (needed for async search operations)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Google Play Services Location
-    implementation(libs.play.services.location)
+
 }

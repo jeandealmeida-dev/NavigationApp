@@ -4,9 +4,23 @@
     <string name="hint_enter_message">Enter your message</string>
     <string name="send_message">Send message</string>
     <string name="chat_title">Chat</string>
+    <string name="support_title">Suporte</string>
+    <string name="recording_time_initial">00:00</string>
+    <string name="audio_message">Audio message</string>
+    
+    <!-- Error messages -->
     <string name="error_empty_message">Message cannot be empty</string>
     <string name="error_send_failed">Failed to send message</string>
     <string name="error_load_failed">Failed to load messages</string>
+    <string name="error_get_messages">Failed to retrieve messages</string>
+    <string name="error_clear_messages">Failed to clear messages</string>
+    <string name="error_audio_invalid">Invalid or empty audio file</string>
+    <string name="error_audio_send">Failed to send audio</string>
     <string name="realtime_connected">Connected to chat</string>
     <string name="realtime_disconnected">Disconnected from chat</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="play_audio">Play Audio</string>
+    <string name="pause_audio">Pause Audio</string>
+    <string name="playing_audio">Playing...</string>
+    <string name="typing">%s está digitando…</string>
 </resources>

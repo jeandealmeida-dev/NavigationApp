@@ -1,52 +1,61 @@
 package com.jeandealmeida_dev.billortest.chat.data.repository
 
 import com.jeandealmeida_dev.billortest.chat.domain.model.ChatMessage
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for chat operations
  */
 interface ChatRepository {
-    
-    /**
-     * Get all messages from local cache
-     */
-    fun getMessages(): Flowable<List<ChatMessage>>
-    
+
     /**
      * Get messages for a specific channel
      */
-    fun getMessagesByChannel(channelId: String): Flowable<List<ChatMessage>>
-    
+    suspend fun getMessagesByChannel(channelId: String): Flow<List<ChatMessage>>
+
     /**
      * Send a new message
      */
-    fun sendMessage(
+    suspend fun sendMessage(
         message: String,
         userId: String,
         userName: String,
         channelId: String? = null
-    ): Single<ChatMessage>
-    
+    ): ChatMessage
+
     /**
-     * Sync messages from remote server
+     * Send a new audio message
      */
-    fun syncMessages(): Single<List<ChatMessage>>
-    
+    suspend fun sendAudioMessage(
+        audioUrl: String,
+        audioDuration: Int,
+        userId: String,
+        userName: String,
+        channelId: String? = null
+    ): ChatMessage
+
+    /**
+     * Send a new typing status
+     */
+    suspend fun sendTypingStatus(
+        isTyping: Boolean,
+        userId: String,
+        userName: String,
+        channelId: String
+    )
+
     /**
      * Subscribe to realtime message updates
      */
-    fun subscribeToRealtimeMessages(): Observable<ChatMessage>
-    
+    suspend fun subscribeToRealtimeMessages(channelId: String)
+
     /**
-     * Unsubscribe from realtime updates
+     * Subscribe to realtime typing status updates
      */
-    fun unsubscribeFromRealtime()
-    
+    suspend fun subscribeToRealtimeTypingStatus(channelId: String): Flow<List<String>>
+
     /**
      * Clear all local messages
      */
-    fun clearMessages(): Single<Int>
+    suspend fun clearMessages(): Int
 }

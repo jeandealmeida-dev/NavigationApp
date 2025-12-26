@@ -31,6 +31,7 @@ include(
     ":app",
     ":commons",
     ":core",
+    ":core:location",
     ":feature:chat",
     ":feature:map"
 )

@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(project(ProjectDependencies.Module.commons))
+    implementation(project(ProjectDependencies.Module.core))
 
     implementationPackLibraries {
         addUnitTestDependencies(it)
@@ -68,8 +69,9 @@ dependencies {
     // Picasso
     implementation(libs.picasso)
 
-    // TODO: Add Supabase dependencies when ready to integrate
-    // implementation("io.github.jan-tennert.supabase:postgrest-kt:VERSION")
-    // implementation("io.github.jan-tennert.supabase:realtime-kt:VERSION")
-    // implementation("io.ktor:ktor-client-android:VERSION")
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
 }

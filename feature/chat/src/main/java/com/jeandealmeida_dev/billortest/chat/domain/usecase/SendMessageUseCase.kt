@@ -2,7 +2,6 @@ package com.jeandealmeida_dev.billortest.chat.domain.usecase
 
 import com.jeandealmeida_dev.billortest.chat.data.repository.ChatRepository
 import com.jeandealmeida_dev.billortest.chat.domain.model.ChatMessage
-import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 /**
@@ -21,16 +20,17 @@ class SendMessageUseCase @Inject constructor(
      * @param channelId Optional channel ID
      * @return Single with the sent message
      */
-    operator fun invoke(
+    suspend operator fun invoke(
         message: String,
         userId: String,
         userName: String,
-        channelId: String? = null
-    ): Single<ChatMessage> {
+        channelId: String
+    ): ChatMessage {
         require(message.isNotBlank()) { "Message cannot be blank" }
         require(userId.isNotBlank()) { "User ID cannot be blank" }
         require(userName.isNotBlank()) { "User name cannot be blank" }
-        
+        require(channelId.isNotBlank()) { "Channel ID cannot be blank" }
+
         return repository.sendMessage(message.trim(), userId, userName, channelId)
     }
 }

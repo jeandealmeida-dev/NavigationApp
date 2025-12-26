@@ -3,12 +3,12 @@ package com.jeandealmeida_dev.billortest.chat.di
 import android.content.Context
 import androidx.room.Room
 import com.jeandealmeida_dev.billortest.chat.data.local.ChatDatabase
-import com.jeandealmeida_dev.billortest.chat.data.local.ChatLocalDataSource
 import com.jeandealmeida_dev.billortest.chat.data.local.dao.ChatMessageDao
 import com.jeandealmeida_dev.billortest.chat.data.remote.ChatRemoteDataSource
-import com.jeandealmeida_dev.billortest.chat.data.remote.SupabaseChatRemoteDataSource
+import com.jeandealmeida_dev.billortest.chat.data.remote.FirestoreChatRemoteDataSource
 import com.jeandealmeida_dev.billortest.chat.data.repository.ChatRepository
 import com.jeandealmeida_dev.billortest.chat.data.repository.ChatRepositoryImpl
+import com.jeandealmeida_dev.billortest.commons.ui.handler.AudioRecordHandler
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,7 +23,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class ChatModule {
-    
+
     @Binds
     @Singleton
     abstract fun bindChatRepository(
@@ -33,7 +33,7 @@ abstract class ChatModule {
     @Binds
     @Singleton
     abstract fun bindChatRemoteDataSource(
-        supabaseChatRemoteDataSource: SupabaseChatRemoteDataSource
+        firestoreChatRemoteDataSource: FirestoreChatRemoteDataSource
     ): ChatRemoteDataSource
     
     companion object {
@@ -56,6 +56,15 @@ abstract class ChatModule {
             database: ChatDatabase
         ): ChatMessageDao {
             return database.chatMessageDao()
+        }
+
+        @Provides
+        fun provideAudioRecord(
+            @ApplicationContext context: Context,
+        ): AudioRecordHandler {
+            return AudioRecordHandler(
+                context = context
+            )
         }
     }
 }

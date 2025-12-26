@@ -1,17 +1,19 @@
 package com.jeandealmeida_dev.billortest
 
 import android.app.Application
+import com.mapbox.navigation.base.options.NavigationOptions
+import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import dagger.hilt.android.HiltAndroidApp
 
-/**
- * Application class for BillorTest
- * Annotated with @HiltAndroidApp to enable Hilt dependency injection
- */
 @HiltAndroidApp
 class BillorTestApplication : Application() {
     
     override fun onCreate() {
         super.onCreate()
-        // Application initialization code here
+        MapboxNavigationApp.setup(
+            navigationOptions = NavigationOptions.Builder(this)
+                .isDebugLoggingEnabled(true)
+                .build()
+        )
     }
 }

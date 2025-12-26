@@ -9,7 +9,7 @@ kotlin-gradle-plugin-version = "2.1.0"
 kotlin-stdlib = "2.1.0"
 navigation-plugin-version = "2.9.2"
 dagger = "2.57"
-hilt = "2.52"
+hilt = "2.57"
 retrofit = "3.0.0"
 room = "2.7.2"
 moshi = "1.15.2"
@@ -41,6 +41,10 @@ mapbox = "11.17.1"
 mapbox-search = "2.17.1"
 mapbox-navigation = "3.17.1"
 play-services-location = "21.3.0"
+
+# Firebase
+firebase-bom = "33.7.0"
+google-services = "4.4.2"
 
 # Tests
 jacoco = "0.8.13"
@@ -138,6 +142,16 @@ mapbox-search-autofill = { group = "com.mapbox.search", name = "autofill", versi
 mapbox-search-android-ui = { group = "com.mapbox.search", name = "mapbox-search-android-ui", version.ref = "mapbox-search" }
 mapbox-search-android = { group = "com.mapbox.search", name = "mapbox-search-android", version.ref = "mapbox-search" }
 mapbox-navigation-android = { group = "com.mapbox.navigationcore", name = "android", version.ref = "mapbox-navigation" }
+mapbox-navigation-ui-components = { group = "com.mapbox.navigationcore", name = "ui-components", version.ref = "mapbox-navigation" }
+mapbox-navigation-ui-dropin = { group = "com.mapbox.navigationcore", name = "ui-dropin", version.ref = "mapbox-navigation" }
+
+# ---------------------
+# Firebase
+# ---------------------
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
 
 # ---------------------
 # Android X
@@ -172,5 +186,6 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-fragment-ktx
 # ---------------------
 build-gradle = { module = "com.android.tools.build:gradle", version.ref = "build-gradle" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin-version" }
+google-services-plugin = { module = "com.google.gms:google-services", version.ref = "google-services" }
 multidex = { group = "com.android.support", name = "multidex", version.ref = "multidex" }
 stetho = { group = "com.facebook.stetho", name = "stetho", version.ref = "stetho" }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="message_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="padding_x">16dp</dimen>
+    <dimen name="padding_m">12dp</dimen>
+    <dimen name="padding_s">8dp</dimen>
+    <dimen name="text_size_title">14sp</dimen>
+    <dimen name="text_size">12sp</dimen>
+    <dimen name="text_size_s">10sp</dimen>
+    <dimen name="text_size_body">16sp</dimen>
+    <dimen name="button_size_x">48dp</dimen>
+    <dimen name="icon_size">28dp</dimen>
+</resources>

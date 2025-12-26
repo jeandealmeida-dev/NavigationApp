@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jeandealmeida_dev.billortest.map.ui.BillorMapView
+    <com.jeandealmeida_dev.billortest.map.ui.components.BillorMapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,6 +12,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
+        android:id="@+id/tripProgressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/searchCardView"
@@ -57,6 +65,16 @@
                 android:textSize="16sp" />
 
             <ImageButton
+                android:id="@+id/voiceSearchButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/voice_search"
+                android:src="@drawable/ic_microphone" />
+
+            <ImageButton
                 android:id="@+id/clearButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -94,7 +112,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:elevation="8dp"
-            />
+            android:elevation="8dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

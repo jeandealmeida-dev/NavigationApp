@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * Data transfer object for chat messages from Supabase
+ * Data transfer object for chat messages from Firebase/Firestore
  */
 @JsonClass(generateAdapter = true)
 data class ChatMessageDto(
@@ -24,5 +24,14 @@ data class ChatMessageDto(
     val createdAt: String,
     
     @Json(name = "channel_id")
-    val channelId: String? = null
+    val channelId: String? = null,
+    
+    @Json(name = "message_type")
+    val messageType: String = "TEXT",
+    
+    @Json(name = "audio_url")
+    val audioUrl: String? = null,
+    
+    @Json(name = "audio_duration")
+    val audioDuration: Int? = null
 )

@@ -4,11 +4,10 @@ import com.jeandealmeida_dev.billortest.chat.data.local.ChatLocalDataSource
 import com.jeandealmeida_dev.billortest.chat.data.mapper.ChatMessageMapper.toDomain
 import com.jeandealmeida_dev.billortest.chat.data.mapper.ChatMessageMapper.toEntity
 import com.jeandealmeida_dev.billortest.chat.data.remote.ChatRemoteDataSource
+import com.jeandealmeida_dev.billortest.chat.domain.ChatException
 import com.jeandealmeida_dev.billortest.chat.domain.model.ChatMessage
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -19,65 +18,114 @@ class ChatRepositoryImpl @Inject constructor(
     private val localDataSource: ChatLocalDataSource,
     private val remoteDataSource: ChatRemoteDataSource
 ) : ChatRepository {
-    
-    override fun getMessages(): Flowable<List<ChatMessage>> {
-        return localDataSource.getAllMessages()
-            .map { entities -> entities.map { it.toDomain() } }
-            .subscribeOn(Schedulers.io())
-    }
-    
-    override fun getMessagesByChannel(channelId: String): Flowable<List<ChatMessage>> {
-        return localDataSource.getMessagesByChannel(channelId)
-            .map { entities -> entities.map { it.toDomain() } }
-            .subscribeOn(Schedulers.io())
-    }
-    
-    override fun sendMessage(
+
+    //region Send Events
+    override suspend fun sendMessage(
         message: String,
         userId: String,
         userName: String,
         channelId: String?
-    ): Single<ChatMessage> {
-        return remoteDataSource.sendMessage(message, userId, userName, channelId)
-            .map { dto -> dto.toDomain() }
-            .flatMap { domainMessage ->
+    ): ChatMessage {
+        try {
+            return remoteDataSource.sendMessage(
+                message = message,
+                userId = userId,
+                userName = userName,
+                channelId = channelId
+            ).toDomain().also { message ->
                 // Save to local cache
-                localDataSource.insertMessage(domainMessage.toEntity())
-                    .map { domainMessage }
-            }
-            .subscribeOn(Schedulers.io())
-    }
-    
-    override fun syncMessages(): Single<List<ChatMessage>> {
-        return remoteDataSource.getMessages()
-            .map { dtos -> dtos.map { it.toDomain() } }
-            .flatMap { messages ->
-                // Save to local cache
-                val entities = messages.map { it.toEntity() }
-                localDataSource.insertMessages(entities)
-                    .map { messages }
-            }
-            .subscribeOn(Schedulers.io())
-    }
-    
-    override fun subscribeToRealtimeMessages(): Observable<ChatMessage> {
-        return remoteDataSource.subscribeToMessages()
-            .map { dto -> dto.toDomain() }
-            .doOnNext { message ->
-                // Save incoming message to local cache
                 localDataSource.insertMessage(message.toEntity())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe()
             }
-            .subscribeOn(Schedulers.io())
+        } catch (exception: Exception) {
+            throw ChatException.MessageSentException(exception.message ?: "Erro ao obter mensagens")
+        }
     }
-    
-    override fun unsubscribeFromRealtime() {
-        remoteDataSource.unsubscribe()
+
+    override suspend fun sendAudioMessage(
+        audioUrl: String,
+        audioDuration: Int,
+        userId: String,
+        userName: String,
+        channelId: String?
+    ): ChatMessage {
+        try {
+
+            return remoteDataSource.sendAudioMessage(
+                audioUrl,
+                audioDuration,
+                userId,
+                userName,
+                channelId
+            ).toDomain().also { message ->
+                // Save to local cache
+                localDataSource.insertMessage(message.toEntity())
+            }
+        } catch (exception: Exception) {
+            throw ChatException.MessageSentException(exception.message ?: "Erro ao obter mensagens")
+        }
     }
-    
-    override fun clearMessages(): Single<Int> {
+
+    override suspend fun sendTypingStatus(
+        isTyping: Boolean,
+        userId: String,
+        userName: String,
+        channelId: String
+    ) {
+        try {
+            remoteDataSource.sendTypingStatus(isTyping, userId, userName, channelId)
+        } catch (exception: Exception) {
+            throw ChatException.TypingStatusException(
+                exception.message ?: "Erro ao obter mensagens"
+            )
+        }
+    }
+
+    //endregion
+
+    //region Realtime Connection
+
+    override suspend fun getMessagesByChannel(channelId: String): Flow<List<ChatMessage>> {
+        return try {
+            localDataSource.getMessagesByChannel(channelId)
+                .map { entity -> entity.map { it.toDomain() } }
+        } catch (exception: Exception) {
+            throw ChatException.GetMessageException(exception.message ?: "Erro ao obter mensagens")
+        }
+    }
+
+    override suspend fun subscribeToRealtimeMessages(channelId: String) {
+        try {
+            remoteDataSource.subscribeToMessages(channelId)
+                .collect { dto ->
+                    localDataSource.insertMessage(dto.toEntity())
+                }
+        } catch (exception: Exception) {
+            throw ChatException.RealtimeConnectionException(
+                exception.message ?: "Erro ao obter mensagens"
+            )
+        }
+    }
+
+    override suspend fun subscribeToRealtimeTypingStatus(channelId: String): Flow<List<String>> {
+        try {
+            return remoteDataSource.subscribeToTypingStatus(channelId)
+        } catch (exception: Exception) {
+            throw ChatException.TypingStatusException(
+                exception.message ?: "Erro ao obter mensagens"
+            )
+        }
+    }
+
+    //endregion
+
+    override suspend fun clearMessages(): Int {
+        try {
+            localDataSource.deleteAllMessages()
+        } catch (exception: Exception) {
+            throw ChatException.ClearMessageException(
+                exception.message ?: "Erro ao obter mensagens"
+            )
+        }
         return localDataSource.deleteAllMessages()
-            .subscribeOn(Schedulers.io())
     }
 }

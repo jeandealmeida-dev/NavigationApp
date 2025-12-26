@@ -2,7 +2,7 @@ package com.jeandealmeida_dev.billortest.chat.domain.usecase
 
 import com.jeandealmeida_dev.billortest.chat.data.repository.ChatRepository
 import com.jeandealmeida_dev.billortest.chat.domain.model.ChatMessage
-import io.reactivex.rxjava3.core.Flowable
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -11,18 +11,11 @@ import javax.inject.Inject
 class GetMessagesUseCase @Inject constructor(
     private val repository: ChatRepository
 ) {
-    
-    /**
-     * Get all messages
-     */
-    operator fun invoke(): Flowable<List<ChatMessage>> {
-        return repository.getMessages()
-    }
-    
+
     /**
      * Get messages for a specific channel
      */
-    operator fun invoke(channelId: String): Flowable<List<ChatMessage>> {
+    suspend operator fun invoke(channelId: String): Flow<List<ChatMessage>> {
         return repository.getMessagesByChannel(channelId)
     }
 }

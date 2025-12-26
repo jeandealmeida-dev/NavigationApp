@@ -8,6 +8,10 @@ object ProjectDependencies {
         const val core = ":core"
         const val commons = ":commons"
 
+        object Core {
+            const val location = ":core:location"
+        }
+
         object Feature {
             const val chat = ":feature:chat"
             const val map = ":feature:map"

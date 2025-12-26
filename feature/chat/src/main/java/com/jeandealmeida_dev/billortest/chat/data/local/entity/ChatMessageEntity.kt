@@ -29,5 +29,14 @@ data class ChatMessageEntity(
     val channelId: String? = null,
     
     @ColumnInfo(name = "is_sent")
-    val isSent: Boolean = true
+    val isSent: Boolean = true,
+    
+    @ColumnInfo(name = "message_type")
+    val messageType: String = "TEXT",
+    
+    @ColumnInfo(name = "audio_url")
+    val audioUrl: String? = null,
+    
+    @ColumnInfo(name = "audio_duration")
+    val audioDuration: Int? = null
 )
