@@ -8,31 +8,9 @@ private val kapt = "kapt"
 private val testImplementation = "testImplementation"
 private val androidTestImplementation = "androidTestImplementation"
 
-fun DependencyHandler.addDaggerDependencies(catalog: VersionCatalog) {
-    add(implementation, catalog.findLibrary("dagger").get())
-    add(kapt, catalog.findLibrary("dagger-compiler").get())
-    add(implementation, catalog.findLibrary("dagger-android").get())
-    add(implementation, catalog.findLibrary("dagger-android-support").get())
-    add(kapt, catalog.findLibrary("dagger-android-support").get())
-    add(kapt, catalog.findLibrary("dagger-android-processor").get())
-}
-
 fun DependencyHandler.addHiltDependencies(catalog: VersionCatalog) {
     add(implementation, catalog.findLibrary("hilt-android").get())
     add(kapt, catalog.findLibrary("hilt-compiler").get())
-}
-
-fun DependencyHandler.addRetrofitDependencies(catalog: VersionCatalog) {
-    add(implementation, catalog.findLibrary("retrofit").get())
-    add(implementation, catalog.findLibrary("retrofit-adapter-rxjava").get())
-    add(implementation, catalog.findLibrary("retrofit-converter-moshi").get())
-    add(implementation, catalog.findLibrary("retrofit-converter-gson").get())
-}
-
-fun DependencyHandler.addRxJavaDependencies(catalog: VersionCatalog) {
-    add(implementation, catalog.findLibrary("rxkotlin").get())
-    add(implementation, catalog.findLibrary("rxjava").get())
-    add(implementation, catalog.findLibrary("rxandroid").get())
 }
 
 fun DependencyHandler.addRoomDependencies(catalog: VersionCatalog) {

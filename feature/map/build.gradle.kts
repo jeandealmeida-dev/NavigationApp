@@ -36,18 +36,12 @@ dependencies {
     implementationPackLibraries {
         addUnitTestDependencies(it)
         addHiltDependencies(it)
-        addRoomDependencies(it)
-        addRetrofitDependencies(it)
-        addMoshiDependencies(it)
     }
 
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.lifecycle.runtime)
-
-    // Skeleton
-    // implementation(libs.skeleton) // Commented out - library not available
 
     // Picasso
     implementation(libs.picasso)
@@ -61,7 +55,6 @@ dependencies {
     implementation(libs.mapbox.search.place.autocomplete)
     implementation(libs.mapbox.navigation.android)
     implementation(libs.mapbox.navigation.ui.components)
-    // Kotlin Coroutines (needed for async search operations)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
 

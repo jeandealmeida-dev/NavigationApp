@@ -31,8 +31,7 @@ dependencies {
     // VersionCatalog
     implementationPackLibraries {
         addHiltDependencies(it)
-        addRetrofitDependencies(it)
-        addRxJavaDependencies(it)
+        addMoshiDependencies(it)
     }
 
     // Android

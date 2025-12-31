@@ -46,10 +46,9 @@ dependencies {
 
     implementationPackLibraries {
         addUnitTestDependencies(it)
+        addMoshiDependencies(it)
         addHiltDependencies(it)
         addRoomDependencies(it)
-        addRetrofitDependencies(it)
-        addMoshiDependencies(it)
     }
 
     implementation(libs.material)
@@ -57,17 +56,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment)
-
-    // RxJava
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
-    implementation(libs.rxkotlin)
-
-    // Skeleton
-    // implementation(libs.skeleton) // Commented out - library not available
-
-    // Picasso
-    implementation(libs.picasso)
 
     // Firebase
     implementation(platform(libs.firebase.bom))

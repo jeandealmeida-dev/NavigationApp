@@ -19,8 +19,6 @@ dependencies {
         addUnitTestDependencies(it)
         addHiltDependencies(it)
         addRoomDependencies(it)
-        addRetrofitDependencies(it)
-        addMoshiDependencies(it)
     }
 
     implementation(libs.material)

@@ -9,7 +9,6 @@ plugins {
 dependencies {
     implementationPackLibraries {
         addHiltDependencies(it)
-        addRxJavaDependencies(it)
     }
 
     implementation(libs.play.services.location)
